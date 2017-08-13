@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+  <record model="ir.ui.view" id="account_dynamic_date_filter">
+    <field name="name">sh_mod.account.invoice.select</field>
+    <field name="model">account.invoice</field>
+    <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+    <field name="priority">99</field>
+    <field name="arch" type="xml">
+      <xpath expr="//filter[@name='late']" position="after">
+        <separator/>
+        <filter name="today" string="Due Today" domain="[('date_due', '=', time.strftime('%Y-%m-%d'))]"/>
+        <filter name="week" string="Due This Week" domain="[('date_due','&gt;=', (context_today() - datetime.timedelta(days=(context_today().weekday()))).strftime('%Y-%m-%d 00:00:00')),('date_due','&lt;=', (context_today() + datetime.timedelta(days=(6-context_today().weekday()))).strftime('%Y-%m-%d 00:00:00'))]"/>
+        <filter name="month" string="Due This Month" domain="[('date_due', '&gt;=', time.strftime('%Y-%m-01')),('date_due', '&lt;=', time.strftime('%Y-%m-31'))]"/>
+        <separator/>
+        <filter name="q1" string="Due Fiscal Q1" domain="[('date_due','&gt;=',datetime.datetime.now().strftime('%Y-01-01')),('date_due','&lt;=',datetime.datetime.now().strftime('%Y-3-31'))]"/>
+        <filter name="q2" string="Due Fiscal Q2" domain="[('date_due','&gt;=',datetime.datetime.now().strftime('%Y-04-01')),('date_due','&lt;=',datetime.datetime.now().strftime('%Y-6-30'))]"/>
+        <filter name="q3" string="Due Fiscal Q3" domain="[('date_due','&gt;=',datetime.datetime.now().strftime('%Y-07-01')),('date_due','&lt;=',datetime.datetime.now().strftime('%Y-9-30'))]"/>
+        <filter name="q4" string="Due Fiscal Q4" domain="[('date_due','&gt;=',datetime.datetime.now().strftime('%Y-10-01')),('date_due','&lt;=',datetime.datetime.now().strftime('%Y-12-31'))]"/>
+        <filter name="year" string="Due This Year" domain="[('date_due','&gt;=',datetime.datetime.now().strftime('%Y-01-01')),('date_due','&lt;=',datetime.datetime.now().strftime('%Y-12-31'))]"/>
+        <separator/>
+        <filter name="todayorolder" string="Due Today or Older" domain="[('date_due','&lt;=', (context_today()).strftime('%Y-%m-%d 00:00:00') )]"/>
+        <filter name="weekahead" string="Due +7 Days or Older" domain="[('date_due','&lt;=', (context_today() + datetime.timedelta(days=7)).strftime('%Y-%m-%d 00:00:00') )]"/>
+        <filter name="2weekahead" string="Due +14 Days or Older" domain="[('date_due','&lt;=', (context_today() + datetime.timedelta(days=14)).strftime('%Y-%m-%d 00:00:00') )]"/>
+        <filter name="monthahead" string="Due +30 Days or Older" domain="[('date_due','&lt;=', (context_today() + datetime.timedelta(days=30)).strftime('%Y-%m-%d 00:00:00') )]"/>
+      </xpath>
+    </field>
+  </record>
+  <record model="ir.ui.view" id="sale_dynamic_date_filter">
+    <field name="name">sh_mod.sale.order.list.select</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+    <field name="priority">99</field>
+    <field name="arch" type="xml">
+      <xpath expr="//filter[@name='my_sale_orders_filter']" position="after">
+        <separator/>
+        <filter name="today" string="Orders Today" domain="[('date_order', '=', time.strftime('%Y-%m-%d'))]"/>
+        <filter name="week" string="Orders This Week" domain="[('date_order','&gt;=', (context_today() - datetime.timedelta(days=(context_today().weekday()))).strftime('%Y-%m-%d 00:00:00')),('date_order','&lt;=', (context_today() + datetime.timedelta(days=(6-context_today().weekday()))).strftime('%Y-%m-%d 00:00:00'))]"/>
+        <filter name="month" string="Orders This Month" domain="[('date_order', '&gt;=', time.strftime('%Y-%m-01')),('date_order', '&lt;=', time.strftime('%Y-%m-31'))]"/>
+        <separator/>
+        <filter name="q1" string="Orders Q1" domain="[('date_order','&gt;=',datetime.datetime.now().strftime('%Y-01-01')),('date_order','&lt;=',datetime.datetime.now().strftime('%Y-3-31'))]"/>
+        <filter name="q2" string="Orders Q2" domain="[('date_order','&gt;=',datetime.datetime.now().strftime('%Y-04-01')),('date_order','&lt;=',datetime.datetime.now().strftime('%Y-6-30'))]"/>
+        <filter name="q3" string="Orders Q3" domain="[('date_order','&gt;=',datetime.datetime.now().strftime('%Y-07-01')),('date_order','&lt;=',datetime.datetime.now().strftime('%Y-9-30'))]"/>
+        <filter name="q4" string="Orders Q4" domain="[('date_order','&gt;=',datetime.datetime.now().strftime('%Y-10-01')),('date_order','&lt;=',datetime.datetime.now().strftime('%Y-12-31'))]"/>
+        <filter name="year" string="Orders This Year" domain="[('date_order','&gt;=',datetime.datetime.now().strftime('%Y-01-01')),('date_order','&lt;=',datetime.datetime.now().strftime('%Y-12-31'))]"/>
+      </xpath>
+    </field>
+  </record>
+  <record model="ir.ui.view" id="purchase_dynamic_date_filter">
+    <field name="name">sh_mod.request.quotation.select</field>
+    <field name="model">purchase.order</field>
+    <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+    <field name="priority">99</field>
+    <field name="arch" type="xml">
+      <xpath expr="//filter[@name='to_approve']" position="after">
+        <separator/>
+        <filter name="today" string="Orders Today" domain="[('date_order', '=', time.strftime('%Y-%m-%d'))]"/>
+        <filter name="week" string="Orders This Week" domain="[('date_order','&gt;=', (context_today() - datetime.timedelta(days=(context_today().weekday()))).strftime('%Y-%m-%d 00:00:00')),('date_order','&lt;=', (context_today() + datetime.timedelta(days=(6-context_today().weekday()))).strftime('%Y-%m-%d 00:00:00'))]"/>
+        <filter name="month" string="Orders This Month" domain="[('date_order', '&gt;=', time.strftime('%Y-%m-01')),('date_order', '&lt;=', time.strftime('%Y-%m-31'))]"/>
+        <separator/>
+        <filter name="q1" string="Orders Q1" domain="[('date_order','&gt;=',datetime.datetime.now().strftime('%Y-01-01')),('date_order','&lt;=',datetime.datetime.now().strftime('%Y-3-31'))]"/>
+        <filter name="q2" string="Orders Q2" domain="[('date_order','&gt;=',datetime.datetime.now().strftime('%Y-04-01')),('date_order','&lt;=',datetime.datetime.now().strftime('%Y-6-30'))]"/>
+        <filter name="q3" string="Orders Q3" domain="[('date_order','&gt;=',datetime.datetime.now().strftime('%Y-07-01')),('date_order','&lt;=',datetime.datetime.now().strftime('%Y-9-30'))]"/>
+        <filter name="q4" string="Orders Q4" domain="[('date_order','&gt;=',datetime.datetime.now().strftime('%Y-10-01')),('date_order','&lt;=',datetime.datetime.now().strftime('%Y-12-31'))]"/>
+        <filter name="year" string="Orders This Year" domain="[('date_order','&gt;=',datetime.datetime.now().strftime('%Y-01-01')),('date_order','&lt;=',datetime.datetime.now().strftime('%Y-12-31'))]"/>
+      </xpath>
+    </field>
+  </record>
+</data>
+</odoo>
